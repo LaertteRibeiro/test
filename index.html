@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Compre Bem - Catálogo Online</title>
+  <title>Compre Bem - Catálogo Online2</title>
+  <link rel="manifest" href="manifest.json"/>
   <style>
     /* Cores do mercado (verde e branco) */
     :root {
@@ -109,7 +110,7 @@
 </head>
 <body>
   <header>
-    <div class="logo">Compre Bem</div>
+    <div class="logo">Compre Bem2</div>
   </header>
 
   <input type="text" class="search-bar" placeholder="Buscar produtos...">
@@ -190,5 +191,18 @@
     // Inicializa
     loadProducts();
   </script>
+  <script>
+        if (
+          typeof navigator.serviceWorker !== 'undefined') { navigator.serviceWorker.register('pwabuild-sw.js')
+      }           
+    
+
+
+  </script>
+
+
+
+
 </body>
 </html>
+
