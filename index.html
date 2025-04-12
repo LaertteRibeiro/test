@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compre Bem - Catálogo Online</title>
+  <style>
+    /* Cores do mercado (verde e branco) */
+    :root {
+      --verde-primario: #2e7d32;
+      --verde-secundario: #4caf50;
+      --branco: #ffffff;
+      --cinza: #f5f5f5;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--cinza);
+    }
+
+    header {
+      background-color: var(--verde-primario);
+      color: var(--branco);
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .search-bar {
+      padding: 10px;
+      margin: 15px auto;
+      width: 90%;
+      max-width: 500px;
+      border: none;
+      border-radius: 20px;
+      font-size: 16px;
+    }
+
+    .categories {
+      display: flex;
+      overflow-x: auto;
+      gap: 10px;
+      padding: 10px;
+      background-color: var(--branco);
+    }
+
+    .category {
+      background-color: var(--verde-secundario);
+      color: var(--branco);
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+      padding: 15px;
+    }
+
+    .product-card {
+      background-color: var(--branco);
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      background-color: #eee; /* Cor de placeholder */
+    }
+
+    .product-name {
+      font-weight: bold;
+      margin: 8px 0;
+      color: #333;
+    }
+
+    .product-price {
+      color: var(--verde-primario);
+      font-weight: bold;
+    }
+
+    .whatsapp-btn {
+      background-color: #25D366;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      margin-top: 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Compre Bem</div>
+  </header>
+
+  <input type="text" class="search-bar" placeholder="Buscar produtos...">
+
+  <div class="categories">
+    <div class="category active">Todos</div>
+    <div class="category">Bebidas</div>
+    <div class="category">Alimentos</div>
+    <div class="category">Limpeza</div>
+    <div class="category">Padaria</div>
+  </div>
+
+  <div class="products" id="products-list">
+    <!-- Produtos serão carregados via JavaScript -->
+  </div>
+
+  <script>
+    // Dados de exemplo (simulando um "banco de dados" no cache)
+    const products = [
+      { id: 1, 
+        name: "Arroz 5kg", 
+        price: 18.99, 
+        category: "Alimentos", 
+        image: "https://obahortifruti.vtexassets.com/arquivos/ids/4250548/Arroz-Tipo-1-Prato-Fino-5-Kg.jpg?v=638144112513930000" },
+      { id: 2, name: "Feijão 1kg", price: 8.50, category: "Alimentos", image: "" },
+      { id: 3, name: "Coca-Cola 2L", price: 9.90, category: "Bebidas", image: "" },
+      { id: 4, name: "Sabão em Pó", price: 12.99, category: "Limpeza", image: "" },
+      { id: 5, name: "Pão Francês", price: 0.50, category: "Padaria", image: "" },
+      { id: 6, name: "Leite 1L", price: 4.99, category: "Bebidas", image: "" },
+    ];
+
+    // Salva no localStorage (cache do navegador)
+    localStorage.setItem('supermarketProducts', JSON.stringify(products));
+
+    // Carrega os produtos na tela
+    function loadProducts() {
+      const productsList = document.getElementById('products-list');
+      productsList.innerHTML = '';
+
+      const savedProducts = JSON.parse(localStorage.getItem('supermarketProducts')) || [];
+      
+      savedProducts.forEach(product => {
+        productsList.innerHTML += `
+          <div class="product-card">
+            <div class="product-image"></div>
+            <div class="product-name">${product.name}</div>
+            <div class="product-price">R$ ${product.price.toFixed(2)}</div>
+            <button class="whatsapp-btn" onclick="shareProduct('${product.name}', ${product.price})">
+              Compartilhar
+            </button>
+          </div>
+        `;
+      });
+    }
+
+    // Compartilhar produto no WhatsApp (diferencial)
+    function shareProduct(name, price) {
+      const message = `Olá! Vi este produto no Compre Bem: *${name}* por R$ ${price.toFixed(2)}. Mais info: [link_do_site]`;
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+    }
+
+    // Filtros por categoria (simples)
+    document.querySelectorAll('.category').forEach(category => {
+      category.addEventListener('click', () => {
+        // Lógica de filtro aqui (simplificado para o modelo)
+        alert(`Filtrando por: ${category.textContent}`);
+      });
+    });
+
+    // Busca (simples)
+    document.querySelector('.search-bar').addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      // Lógica de busca aqui (simplificado para o modelo)
+      console.log("Buscando por:", term);
+    });
+
+    // Inicializa
+    loadProducts();
+  </script>
+</body>
+</html>
